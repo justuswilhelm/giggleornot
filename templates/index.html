@@ -1,5 +1,6 @@
 {% extends "site_base.html" %}
 {% block content %}
+  <h1> WHICH IS GIGGLE? </h1>
   <div class="row">
     <section class="six columns">
       <h2>
@@ -28,10 +29,18 @@
   </div>
   <div class="row">
     <section class="six columns vote">
-      <a href="vote?{{ image_a.id }}">Giggle</a>
+      <a href="vote?yay={{ image_a.id }}&nay={{ image_b.id }}">GIGGLE</a>
     </section>
     <section class="six columns vote">
-      <a href="vote?{{ image_b.id }}">Giggle</a>
+      <a href="vote?yay={{ image_b.id }}&nay={{ image_a.id }}">GIGGLE</a>
+    </section>
+  </div>
+  <div class="row">
+    <section class="six columns">
+      ( GIGGLE SCORE: {{ image_a_score }})
+    </section>
+    <section class="six columns">
+      ( GIGLE SCORE: {{ image_b_score }})
     </section>
   </div>
 {% endblock content %}
