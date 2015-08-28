@@ -5,7 +5,7 @@ Rate and compare Imgur pictures a la Hot Or Not.
 ```
 pip install -r requirements.txt
 cp .env.template .env
-vim .env  # Add imgur keys
+vim .env  # Add env vars (see Environment Variables)
 foreman start
 ```
 
@@ -16,8 +16,9 @@ foreman start
 ## Environment Variables
 Should reside in `.env` so that foreman can pick them up.
 
-- `IMGUR_CLIENT_ID` and `IMGUR_CLIENT_SECRET` can be retrieved in your app
-  settings on https://api.imgur.com
+- `IMGUR_CLIENT_ID` and `IMGUR_CLIENT_SECRET` ... can be retrieved in your app
+  settings on https://api.imgur.com.
+- `SECRET_KEY` ... set it to something secret.
 
 ## Production Server
 ```
@@ -26,5 +27,5 @@ foreman start
 
 ## Development Server
 ```
-foreman run ...
+foreman run python gon.py
 ```
