@@ -1,0 +1,10 @@
+.vote {
+  background-color: #9E9;
+  text-align: center;
+  font-size: 30px;
+}
+
+.vote a {
+  display: inline-block;
+  width: 100%;
+}

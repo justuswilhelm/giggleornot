@@ -1,0 +1,17 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='site_base.css') }}">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+    <title>Giggle Or Not</title>
+  </head>
+  <body>
+    <div class="container">
+      {% include "_flash.html" %}
+      {% block content %}{% endblock content %}
+    </div>
+  </body>
+</html>

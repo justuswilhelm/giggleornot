@@ -1,0 +1,37 @@
+{% extends "site_base.html" %}
+{% block content %}
+  <div class="row">
+    <section class="six columns">
+      <h2>
+        {{ image_a.title }}
+      </h2>
+    </section>
+    <section class="six columns">
+      <h2>
+        {{ image_b.title }}
+      </h2>
+    </section>
+  </div>
+  <div class="row">
+    <section class="six columns">
+      <video preload="auto" autoplay="autoplay" muted="muted" loop="loop"
+      webkit-playsinline="" width="100%">
+        <source src="{{ image_a.mp4}}" type="video/mp4">
+      </video>
+    </section>
+    <section class="six columns">
+      <video preload="auto" autoplay="autoplay" muted="muted" loop="loop"
+      webkit-playsinline="" width="100%">
+        <source src="{{ image_b.mp4}}" type="video/mp4">
+      </video>
+    </section>
+  </div>
+  <div class="row">
+    <section class="six columns vote">
+      <a href="vote?{{ image_a.id }}">Giggle</a>
+    </section>
+    <section class="six columns vote">
+      <a href="vote?{{ image_b.id }}">Giggle</a>
+    </section>
+  </div>
+{% endblock content %}
