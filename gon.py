@@ -23,6 +23,7 @@ from images import get_images
 
 app = Flask(__name__)
 app.secret_key = environ['SECRET_KEY']
+app.config.USERSNAP_KEY = environ['USERSNAP_KEY']
 
 app_signals = Namespace()
 voted = app_signals.signal('voted')
