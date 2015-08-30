@@ -50,15 +50,6 @@ def index():
 @app.route("/vote")
 def vote():
     yay = request.args['yay']
-    nay = request.args['nay']
-    better_image = max(yay, nay, key=lambda img: db_get(img))
-    if db_get(better_image) == 0:
-        flash('Thank you for voting!')
-    elif better_image == yay:
-        flash('Thank you for voting! Others agree with you!')
-    else:
-        flash('Thank you for voting for the unpopular opinion!')
-    print(better_image)
     db_incr(yay)
     return redirect('/')
 
