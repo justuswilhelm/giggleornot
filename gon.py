@@ -72,12 +72,13 @@ def index():
     # Get two random images
     image_a, image_b = map(
         images.__getitem__, sample(range(0, len(images) - 1), 2))
+    image_a.score = db_get(image_a.id)
+    image_b.score = db_get(image_b.id)
+    print(image_a.score)
     return render_template(
         'index.html',
         image_a=image_a,
         image_b=image_b,
-        image_a_score=db_get(image_a.id),
-        image_b_score=db_get(image_b.id),
     )
 
 
