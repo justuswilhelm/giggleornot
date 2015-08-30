@@ -1,3 +1,4 @@
+"""Main module."""
 from os import (
     environ,
     getenv,
@@ -13,6 +14,7 @@ from flask import (
     redirect,
     request,
     request_finished,
+    send_from_directory,
 )
 from keen.client import KeenClient
 from keen import add_event
@@ -21,6 +23,7 @@ from redis import Redis
 from images import get_images
 
 
+# Configuration
 app = Flask(__name__)
 app.secret_key = environ['SECRET_KEY']
 app.config.USERSNAP_KEY = environ['USERSNAP_KEY']
@@ -40,6 +43,13 @@ keen_client = KeenClient(
     read_key=environ['KEEN_READ_KEY'],
     write_key=environ['KEEN_WRITE_KEY'],
 )
+
+
+# Views
+@app.route('/robots.txt')
+@app.route('/favicon.ico')
+def static_from_root():
+    return send_from_directory(app.static_folder, request.path[1:])
 
 
 @app.route("/")
@@ -71,6 +81,7 @@ def vote():
     return redirect('/')
 
 
+# Signal handlers
 @request_finished.connect_via(app)
 def log_pageview(sender, response, **extra):
     add_event("request", {"path": request.path})
