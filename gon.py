@@ -19,6 +19,8 @@ from flask import (
 from keen.client import KeenClient
 from keen import add_event
 from redis import Redis
+from rq import Queue
+from rq.decorators import job
 
 from images import get_images
 
@@ -32,10 +34,16 @@ app.config.GA_ID = environ['GA_ID']
 app_signals = Namespace()
 voted = app_signals.signal('voted')
 
+# Redis
 db = Redis.from_url(getenv('REDIS_URL', 'redis://localhost:6379/'))
+
+# Image model
 db_get = lambda image_id: int(db['images:' + image_id]) if (
     'images:' + image_id) in db else db.set('images:' + image_id, 0) and 0
 db_incr = lambda image_id: db.incr('images:' + image_id)
+
+# RQ
+add_event = job('default', connection=db)(add_event)
 
 keen_client = KeenClient(
     master_key=environ['KEEN_MASTER_KEY'],
@@ -84,12 +92,12 @@ def vote():
 # Signal handlers
 @request_finished.connect_via(app)
 def log_pageview(sender, response, **extra):
-    add_event("request", {"path": request.path})
+    add_event.delay("request", {"path": request.path})
 
 
 @voted.connect_via(app)
 def log_vote(sender, **extra):
-    add_event("vote", {"id": extra['image']})
+    add_event.delay("vote", {"id": extra['image']})
 
 
 if not app.debug:
