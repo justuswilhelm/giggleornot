@@ -1,0 +1,8 @@
+test:
+  override:
+    - echo "No Test"
+deployment:
+  staging:
+    branch: master
+    heroku:
+      appname: giggle
