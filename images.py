@@ -1,4 +1,5 @@
-from functools import lru_cache
+from functools import lru_cache, reduce
+from operator import add
 from os import getenv
 from imgurpython import ImgurClient
 from imgurpython.imgur.models.gallery_image import GalleryImage
@@ -21,7 +22,9 @@ def get_images(hour):
     return list(filter(
         lambda item: item.animated, filter(
             lambda item: isinstance(item, GalleryImage),
-            client.gallery())))
+            reduce(add, (client.gallery(page=i) for i in range(10)))
+        ))
+    )
 
 
 if __name__ == "__main__":
