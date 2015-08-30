@@ -5,25 +5,39 @@ from os import (
 from time import time
 from random import sample
 
+from blinker import Namespace
 from flask import (
+    current_app,
     Flask,
-    flash,
     render_template,
     redirect,
     request,
+    request_finished,
 )
+from keen.client import KeenClient
+from keen import add_event
+from redis import Redis
 
 from images import get_images
 
-from redis import Redis
 
 app = Flask(__name__)
 app.secret_key = environ['SECRET_KEY']
+
+app_signals = Namespace()
+voted = app_signals.signal('voted')
 
 db = Redis.from_url(getenv('REDIS_URL', 'redis://localhost:6379/'))
 db_get = lambda image_id: int(db['images:' + image_id]) if (
     'images:' + image_id) in db else db.set('images:' + image_id, 0) and 0
 db_incr = lambda image_id: db.incr('images:' + image_id)
+
+keen_client = KeenClient(
+    master_key=environ['KEEN_MASTER_KEY'],
+    project_id=environ['KEEN_PROJECT_ID'],
+    read_key=environ['KEEN_READ_KEY'],
+    write_key=environ['KEEN_WRITE_KEY'],
+)
 
 
 @app.route("/")
@@ -51,7 +65,18 @@ def index():
 def vote():
     yay = request.args['yay']
     db_incr(yay)
+    voted.send(current_app._get_current_object(), image=yay)
     return redirect('/')
+
+
+@request_finished.connect_via(app)
+def log_pageview(sender, response, **extra):
+    add_event("request", {"path": request.path})
+
+
+@voted.connect_via(app)
+def log_vote(sender, **extra):
+    add_event("vote", {"id": extra['image']})
 
 
 if __name__ == "__main__":
