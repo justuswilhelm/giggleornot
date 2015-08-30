@@ -92,5 +92,13 @@ def log_vote(sender, **extra):
     add_event("vote", {"id": extra['image']})
 
 
+if not app.debug:
+    from logging import ERROR
+    from logging import StreamHandler
+    stderr_handler = StreamHandler()
+    stderr_handler.setLevel(ERROR)
+    app.logger.addHandler(stderr_handler)
+
+
 if __name__ == "__main__":
     app.run(debug=True)
