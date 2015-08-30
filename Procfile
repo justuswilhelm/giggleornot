@@ -1,1 +1,1 @@
-web: gunicorn gon:app
+web: newrelic-admin run-program gunicorn gon:app -b "0.0.0.0:$PORT" -w 3 hello:app
