@@ -12,25 +12,34 @@
     <div class="container">
       {% include "_flash.html" %}
       {% block content %}{% endblock content %}
+      <footer>
+        <small>
+          Made with 🚀 by
+          <a href="https://justus.pw" target="_blank">
+            Justus Perlwitz
+          </a>
+        </small>
+      </footer>
     </div>
     <script type="text/javascript">
       (function() {
-      var s = document.createElement("script");
-      s.type = "text/javascript";
-      s.async = true;
-      s.src = '//api.usersnap.com/load/'+
-        '{{ config.USERSNAP_KEY }}.js';
-      var x = document.getElementsByTagName('script')[0];
-      x.parentNode.insertBefore(s, x);
+        var s = document.createElement("script");
+        s.type = "text/javascript";
+        s.async = true;
+        s.src = '//api.usersnap.com/load/'+
+          '{{ config.USERSNAP_KEY }}.js';
+        var x = document.getElementsByTagName('script')[0];
+        x.parentNode.insertBefore(s, x);
       })();
     </script>
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
       ga('create', '{{ config.GA_ID }}', 'auto');
       ga('send', 'pageview');
     </script>
+    </footer>
   </body>
 </html>
