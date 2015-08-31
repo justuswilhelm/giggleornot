@@ -110,7 +110,7 @@ def http_error_handler(error):
 # Signal handlers
 @request_finished.connect_via(app)
 def log_pageview(sender, response, **extra):
-    current_app.logger.info("User Agent {}", request.user_agent.string)
+    current_app.logger.info("User Agent %s", request.user_agent.string)
     add_event.delay("request", {"path": request.path})
 
 
