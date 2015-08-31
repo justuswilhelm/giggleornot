@@ -1,9 +1,4 @@
 """Main module."""
-from logging import (
-    INFO,
-    Formatter,
-    StreamHandler,
-)
 from operator import itemgetter
 from os import (
     environ,
