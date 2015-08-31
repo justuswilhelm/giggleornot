@@ -1,10 +1,15 @@
 """Main module."""
+from logging import (
+    INFO,
+    Formatter,
+    StreamHandler,
+)
 from os import (
     environ,
     getenv,
 )
-from time import time
 from random import sample
+from time import time
 
 from blinker import Namespace
 from flask import (
@@ -19,14 +24,16 @@ from flask import (
 from keen.client import KeenClient
 from keen import add_event
 from redis import Redis
-from rq import Queue
 from rq.decorators import job
 
 from images import get_images
 
+__version__ = "Unreleased"
+
 
 # Configuration
 app = Flask(__name__)
+app.debug = 'DEBUG' in environ
 app.secret_key = environ['SECRET_KEY']
 app.config.USERSNAP_KEY = environ['USERSNAP_KEY']
 app.config.GA_ID = environ['GA_ID']
@@ -74,7 +81,6 @@ def index():
         images.__getitem__, sample(range(0, len(images) - 1), 2))
     image_a.score = db_get(image_a.id)
     image_b.score = db_get(image_b.id)
-    print(image_a.score)
     return render_template(
         'index.html',
         image_a=image_a,
@@ -86,6 +92,7 @@ def index():
 def vote():
     yay = request.args['yay']
     db_incr(yay)
+    current_app.logger.info("Voting for %s. New Score is %d", yay, db_get(yay))
     voted.send(current_app._get_current_object(), image=yay)
     return redirect('/')
 
@@ -102,11 +109,14 @@ def log_vote(sender, **extra):
 
 
 if not app.debug:
-    from logging import ERROR
-    from logging import StreamHandler
     stderr_handler = StreamHandler()
-    stderr_handler.setLevel(ERROR)
+    stderr_handler.setFormatter(Formatter(
+        '[%(asctime)s] [%(levelname)s]: %(message)s '
+        '[in %(pathname)s:%(lineno)d]'
+    ))
     app.logger.addHandler(stderr_handler)
+    app.logger.setLevel(INFO)
+    app.logger.info("Hello")
 
 
 if __name__ == "__main__":
