@@ -106,6 +106,7 @@ def show_top():
     return render_template('top.html', images=images_sorted)
 
 
+@app.errorhandler(500)
 @app.errorhandler(404)
 def http_error_handler(error):
     return redirect("/")
