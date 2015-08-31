@@ -120,8 +120,7 @@ def log_vote(sender, **extra):
 if not app.debug:
     stderr_handler = StreamHandler()
     stderr_handler.setFormatter(Formatter(
-        '[%(asctime)s] [%(levelname)s]: %(message)s '
-        '[in %(pathname)s:%(lineno)d]'
+        '[%(levelname)s]: %(message)s [in %(pathname)s:%(lineno)d]'
     ))
     app.logger.addHandler(stderr_handler)
     app.logger.setLevel(INFO)
