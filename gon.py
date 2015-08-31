@@ -99,10 +99,11 @@ def vote():
 
 @app.route("/top")
 def show_top():
-    images = list(map(lambda x: (x[0].decode(), int(x[1])),
-        db.hgetall('images').items()))
-    current_app.logger.info(sorted(images, key=itemgetter(1)))
-    return render_template('top.html', images=images)
+    images = list(
+        map(lambda x: (x[0].decode(), int(x[1])),
+            db.hgetall('images').items()))
+    images_sorted = sorted(images, key=itemgetter(1))[:10]
+    return render_template('top.html', images=images_sorted)
 
 
 # Signal handlers
