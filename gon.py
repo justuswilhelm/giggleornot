@@ -115,6 +115,7 @@ def http_error_handler(error):
 @app.before_request
 def before_request():
     if request.url.startswith('https://'):
+        current_app.logger.warning('FIX ME: https to http redirect')
         url = request.url.replace('https://', 'http://', 1)
         code = 301
         return redirect(url, code=code)
