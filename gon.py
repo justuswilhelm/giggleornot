@@ -4,6 +4,7 @@ from logging import (
     Formatter,
     StreamHandler,
 )
+from operator import itemgetter
 from os import (
     environ,
     getenv,
@@ -45,9 +46,8 @@ voted = app_signals.signal('voted')
 db = Redis.from_url(getenv('REDIS_URL', 'redis://localhost:6379/'))
 
 # Image model
-db_get = lambda image_id: int(db['images:' + image_id]) if (
-    'images:' + image_id) in db else db.set('images:' + image_id, 0) and 0
-db_incr = lambda image_id: db.incr('images:' + image_id)
+db_get = lambda image_id: int(db.hget('images', image_id) or 0)
+db_incr = lambda image_id: db.hincrby('images', image_id, 1)
 
 # RQ
 add_event = job('default', connection=db)(add_event)
@@ -97,6 +97,14 @@ def vote():
     return redirect('/')
 
 
+@app.route("/top")
+def show_top():
+    images = list(map(lambda x: (x[0].decode(), int(x[1])),
+        db.hgetall('images').items()))
+    current_app.logger.info(sorted(images, key=itemgetter(1)))
+    return render_template('top.html', images=images)
+
+
 # Signal handlers
 @request_finished.connect_via(app)
 def log_pageview(sender, response, **extra):
@@ -116,7 +124,6 @@ if not app.debug:
     ))
     app.logger.addHandler(stderr_handler)
     app.logger.setLevel(INFO)
-    app.logger.info("Hello")
 
 
 if __name__ == "__main__":
