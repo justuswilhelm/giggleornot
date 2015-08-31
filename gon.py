@@ -122,14 +122,5 @@ def log_vote(sender, **extra):
     add_event.delay("vote", {"id": extra['image']})
 
 
-if not app.debug:
-    stderr_handler = StreamHandler()
-    stderr_handler.setFormatter(Formatter(
-        '[%(levelname)s]: %(message)s [in %(pathname)s:%(lineno)d]'
-    ))
-    app.logger.addHandler(stderr_handler)
-    app.logger.setLevel(INFO)
-
-
 if __name__ == "__main__":
     app.run(debug=True)
