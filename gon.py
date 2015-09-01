@@ -89,7 +89,7 @@ def vote():
     db_incr(yay)
     current_app.logger.info("Voting for %s. New Score is %d", yay, db_get(yay))
     voted.send(current_app._get_current_object(), image=yay)
-    return redirect('/')
+    return redirect('/?ref=vote')
 
 
 @app.route("/top")
@@ -104,7 +104,7 @@ def show_top():
 @app.errorhandler(500)
 @app.errorhandler(404)
 def http_error_handler(error):
-    return redirect("/")
+    return redirect("/?ref=error")
 
 
 # Signal handlers
@@ -112,7 +112,9 @@ def http_error_handler(error):
 def log_pageview(sender, response, **extra):
     current_app.logger.info(
         "REMOTE_ADDR %s User Agent %s",
-        request.remote_addr, request.user_agent.string)
+        request.remote_addr,
+        request.user_agent.string,
+    )
     add_event.delay("request", {"path": request.path})
 
 
