@@ -1,9 +1,7 @@
 ## The following requirements were added by pip freeze:
-blinker==1.4
 Flask==0.10.1
 gunicorn==19.3.0
 imgurpython==1.1.6
-keen==0.3.17
 newrelic==2.54.0.41
 redis==2.10.3
 rq==0.5.5
