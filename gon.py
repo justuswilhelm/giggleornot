@@ -57,6 +57,7 @@ def index():
         'index.html',
         image_a=image_a,
         image_b=image_b,
+        ranking=get_image_ranking()[:6],
     )
 
 
@@ -66,11 +67,6 @@ def vote():
     db_incr(yay)
     current_app.logger.info("Voting for %s. New Score is %d", yay, db_get(yay))
     return redirect('/?ref=vote')
-
-
-@app.route("/top")
-def show_top():
-    return render_template('top.html', images=get_image_ranking()[:10])
 
 
 @app.errorhandler(500)

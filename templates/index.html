@@ -12,4 +12,15 @@
       {% endwith %}
     </div>
   </div>
+  <div class="row">
+    <h2>Ranking</h2>
+    {% for image in ranking[:5] %}
+      <div class="two columns">
+        <h3 class="center">{{ loop.index }}</h3>
+        <a href="https://imgur.com/{{ image[0] }}" target="_blank">
+          <img class="u-max-full-width" src="https://i.imgur.com/{{ image[0] }}b.jpg">
+        </a>
+      </div>
+    {% endfor %}
+  </div>
 {% endblock content %}

@@ -1,3 +1,4 @@
+from functools import lru_cache
 from operator import itemgetter
 from random import sample
 from time import time
@@ -7,7 +8,17 @@ from flask import current_app
 from images import get_images
 
 
+cache_var = lambda: int(time() / 600)
+
+
 def get_image_ranking():
+    current_app.logger.info(
+        "Retrieving image ranking %s", _get_image_ranking.cache_info())
+    return _get_image_ranking(cache_var())
+
+
+@lru_cache()
+def _get_image_ranking(time):
     return sorted(
         list(map(lambda x: (x[0].decode(), int(x[1])),
                  current_app.db.hgetall('images').items())),
@@ -15,8 +26,7 @@ def get_image_ranking():
 
 
 def get_image_sample(count=2):
-    cache_var = int(time() / 600)
-    images = get_images(cache_var)
+    images = get_images(cache_var())
     return map(images.__getitem__, sample(range(0, len(images) - 1), 2))
 
 
