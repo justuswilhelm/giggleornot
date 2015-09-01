@@ -97,7 +97,7 @@ def show_top():
     images = list(
         map(lambda x: (x[0].decode(), int(x[1])),
             db.hgetall('images').items()))
-    images_sorted = sorted(images, key=itemgetter(1))[:10]
+    images_sorted = sorted(images, reverse=True, key=itemgetter(1))[:10]
     return render_template('top.html', images=images_sorted)
 
 
