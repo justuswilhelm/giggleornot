@@ -1,13 +1,10 @@
 <a class="vote" href="vote?yay={{ yay.id }}&nay={{ nay.id }}">
-  <h2>
-    {{ yay.title }}
-  </h2>
   {% with gif_id=yay.id %}
     {% include "_gif_tag.html" %}
   {% endwith %}
-  <h4>
-    VOTE FOR THIS
-  </h4>
+  <h2>
+    {{ yay.title }}
+  </h2>
   GIGGLE SCORE {{ yay.score }}
 </a>
 <p>
