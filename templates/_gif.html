@@ -1,10 +1,9 @@
 <a class="vote" href="vote?yay={{ yay.id }}&nay={{ nay.id }}">
-  <h3 class="center">{{ yay.score }}</h3>
   {% with gif_id=yay.id %}
     {% include "_gif_tag.html" %}
   {% endwith %}
   <h3>
-    {{ yay.title }}
+    {{ yay.title }} - {{ yay.score }}
   </h3>
 </a>
   <small>
