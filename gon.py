@@ -62,11 +62,5 @@ def index():
     )
 
 
-@app.errorhandler(500)
-@app.errorhandler(404)
-def http_error_handler(error):
-    return redirect("/?ref=error")
-
-
 if __name__ == "__main__":
     app.run(debug=True)
