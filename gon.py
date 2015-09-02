@@ -22,6 +22,7 @@ app.debug = 'DEBUG' in environ
 app.secret_key = environ['SECRET_KEY']
 app.config.USERSNAP_KEY = environ['USERSNAP_KEY']
 app.config.GA_ID = environ['GA_ID']
+app.config.OPTIMIZELY_KEY = environ['OPTIMIZELY_KEY']
 
 # Redis
 app.cache = Cache(

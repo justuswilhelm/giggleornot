@@ -2,6 +2,9 @@
 
 ## [Unreleased] - [unreleased]
 
+### Added
+- Optimizely support
+
 ### Modified
 - Error handling more 'honest'
 - Simplified voting path
