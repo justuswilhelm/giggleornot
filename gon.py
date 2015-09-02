@@ -54,7 +54,6 @@ def index():
 
     # Get two random images
     images = get_image_sample()
-    [setattr(image, 'score', db_get(image.id)) for image in images]
     return render_template(
         'index.html',
         images=images,
