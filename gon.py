@@ -62,12 +62,6 @@ def index():
     )
 
 
-@app.route("/vote")
-def vote():
-    db_incr(request.args['image'])
-    return redirect('/?ref=vote')
-
-
 @app.errorhandler(500)
 @app.errorhandler(404)
 def http_error_handler(error):
