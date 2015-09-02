@@ -1,9 +1,12 @@
 from logging import getLogger
-from functools import lru_cache, reduce
+from functools import reduce
 from operator import add
 from os import getenv
+
 from imgurpython import ImgurClient
 from imgurpython.imgur.models.gallery_image import GalleryImage
+
+from gon import app
 
 logger = getLogger(__name__)
 client = ImgurClient(
@@ -11,14 +14,13 @@ client = ImgurClient(
 
 
 # Example request
-@lru_cache(maxsize=60)
-def get_images(hour):
+@app.cache.cached(timeout=300)
+def get_images():
     """
     Get animated images from imgur.
 
     Caches 60 different versions.
     """
-    logger.info("Retrieving new images, {}".format(get_images.cache_info()))
     return list(filter(
         lambda item: item.animated, filter(
             lambda item: isinstance(item, GalleryImage),

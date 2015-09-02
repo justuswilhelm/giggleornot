@@ -12,14 +12,8 @@ from flask import (
     request,
     send_from_directory,
 )
+from flask.ext.cache import Cache
 from redis import Redis
-
-from data import (
-    get_image_sample,
-    get_image_ranking,
-    db_get,
-    db_incr,
-)
 
 __version__ = "Unreleased"
 
@@ -32,7 +26,15 @@ app.config.USERSNAP_KEY = environ['USERSNAP_KEY']
 app.config.GA_ID = environ['GA_ID']
 
 # Redis
+app.cache = Cache(app)
 app.db = Redis.from_url(getenv('REDIS_URL', 'redis://localhost:6379/'))
+
+from data import (
+    get_image_sample,
+    get_image_ranking,
+    db_get,
+    db_incr,
+)
 
 
 # Views
@@ -44,20 +46,13 @@ def static_from_root():
 
 @app.route("/")
 def index():
-    """
-    Index.
-
-    Retriggers cache for image retrieval once every 10 minutes
-    """
     # Get two random images
-    image_a, image_b = get_image_sample()
-    image_a.score = db_get(image_a.id)
-    image_b.score = db_get(image_b.id)
+    images = get_image_sample()
+    [setattr(image, 'score', db_get(image.id)) for image in images]
     return render_template(
         'index.html',
-        image_a=image_a,
-        image_b=image_b,
-        ranking=get_image_ranking()[:6],
+        images=images,
+        ranking=get_image_ranking()[:5],
     )
 
 

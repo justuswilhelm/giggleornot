@@ -1,16 +1,11 @@
 {% extends "site_base.html" %}
 {% block content %}
   <div class="row">
-    <div class="six columns">
-      {% with yay=image_a, nay=image_b %}
+    {% for image in images %}
+      <div class="six columns">
         {% include "_gif.html" %}
-      {% endwith %}
-    </div>
-    <div class="six columns">
-      {% with yay=image_b, nay=image_a %}
-        {% include "_gif.html" %}
-      {% endwith %}
-    </div>
+      </div>
+    {% endfor %}
   </div>
   <div class="row">
     <h2>Ranking</h2>
