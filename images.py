@@ -14,7 +14,7 @@ client = ImgurClient(
 
 
 # Example request
-@app.cache.cached(timeout=300)
+@app.cache.cached(key_prefix='get_images', timeout=300)
 def get_images():
     """
     Get animated images from imgur.

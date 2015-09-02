@@ -26,7 +26,11 @@ app.config.USERSNAP_KEY = environ['USERSNAP_KEY']
 app.config.GA_ID = environ['GA_ID']
 
 # Redis
-app.cache = Cache(app)
+app.cache = Cache(
+    app, config={
+        'CACHE_TYPE': 'redis',
+        'CACHE_REDIS_URL': getenv('REDIS_URL', 'redis://localhost:6379/'),
+    })
 app.db = Redis.from_url(getenv('REDIS_URL', 'redis://localhost:6379/'))
 
 from data import (
@@ -58,9 +62,10 @@ def index():
 
 @app.route("/vote")
 def vote():
-    yay = request.args['yay']
-    db_incr(yay)
-    current_app.logger.info("Voting for %s. New Score is %d", yay, db_get(yay))
+    image = request.args['image']
+    db_incr(image)
+    current_app.logger.info(
+        "Voting for %s. New Score is %d", image, db_get(image))
     return redirect('/?ref=vote')
 
 
