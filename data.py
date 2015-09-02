@@ -21,4 +21,6 @@ def get_image_sample(count=2):
 
 # Image model
 db_get = lambda image_id: int(app.db.hget('images', image_id) or 0)
-db_incr = lambda image_id: app.db.hincrby('images', image_id, 1)
+
+def db_incr(image_id):
+    app.db.hincrby('images', image_id, 1)
