@@ -4,6 +4,7 @@
 
 ### Modified
 - Simplified layout of GIF display
+- Simplify log output
 
 ## [0.0.0] - 2015-09-02
 Initial release

@@ -5,7 +5,6 @@ from os import (
 )
 
 from flask import (
-    current_app,
     Flask,
     render_template,
     redirect,
@@ -64,8 +63,6 @@ def index():
 def vote():
     image = request.args['image']
     db_incr(image)
-    current_app.logger.info(
-        "Voting for %s. New Score is %d", image, db_get(image))
     return redirect('/?ref=vote')
 
 
@@ -73,16 +70,6 @@ def vote():
 @app.errorhandler(404)
 def http_error_handler(error):
     return redirect("/?ref=error")
-
-
-# Signal handlers
-@app.before_request
-def log_pageview():
-    current_app.logger.info(
-        "REMOTE_ADDR %s User Agent %s",
-        request.remote_addr,
-        request.user_agent.string,
-    )
 
 
 if __name__ == "__main__":
