@@ -49,6 +49,9 @@ def static_from_root():
 
 @app.route("/")
 def index():
+    if 'image' in request.args:
+        db_incr(request.args['image'])
+
     # Get two random images
     images = get_image_sample()
     [setattr(image, 'score', db_get(image.id)) for image in images]
@@ -61,8 +64,7 @@ def index():
 
 @app.route("/vote")
 def vote():
-    image = request.args['image']
-    db_incr(image)
+    db_incr(request.args['image'])
     return redirect('/?ref=vote')
 
 

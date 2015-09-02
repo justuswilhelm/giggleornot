@@ -3,6 +3,7 @@
 ## [Unreleased] - [unreleased]
 
 ### Modified
+- Simplified voting path
 - Simplified layout of GIF display
 - Simplify log output
 
