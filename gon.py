@@ -7,7 +7,6 @@ from os import (
 from flask import (
     Flask,
     render_template,
-    redirect,
     request,
     send_from_directory,
 )
