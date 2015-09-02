@@ -4,10 +4,12 @@
   {% endwith %}
 </a>
 <p>
-{{ image.title }} <small>({{ image.score }} Points)</small>
+  {{ image.title }}
+  <small>
+    ({{ image.score }} Points,
+    <a href="https://imgur.com/{{ image.id }}" target="_blank">
+      Source</a>)
+  </small>
 </p>
 <small>
-  <a href="https://imgur.com/{{ image.id }}" target="_blank">
-    Source
-  </a>
 </small>
