@@ -6,12 +6,14 @@ from os import (
 
 from flask import (
     Flask,
+    redirect,
     render_template,
     request,
     send_from_directory,
 )
 from flask.ext.cache import Cache
 from redis import Redis
+from imgurpython.helpers.error import ImgurClientError
 
 __version__ = "Unreleased"
 
@@ -35,7 +37,6 @@ app.db = Redis.from_url(getenv('REDIS_URL', 'redis://localhost:6379/'))
 from data import (
     get_image_sample,
     get_image_ranking,
-    db_get,
     db_incr,
 )
 
@@ -53,7 +54,11 @@ def index():
         db_incr(request.args['image'])
 
     # Get two random images
-    images = get_image_sample()
+    try:
+        images = get_image_sample()
+    except ImgurClientError:
+        return redirect('/?ref=imgur-client-error')
+
     return render_template(
         'index.html',
         images=images,
