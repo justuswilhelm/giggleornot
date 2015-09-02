@@ -2,10 +2,10 @@
   {% with gif_id=image.id %}
     {% include "_gif_tag.html" %}
   {% endwith %}
-  <h3>
-    {{ image.title }} ({{ image.score }} Points)
-  </h3>
 </a>
+<p>
+{{ image.title }} <small>({{ image.score }} Points)</small>
+</p>
 <small>
   <a href="https://imgur.com/{{ image.id }}" target="_blank">
     Source

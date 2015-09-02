@@ -1,4 +1,13 @@
 # Change Log
 
-## [0.0.0] - [0.0.0]
+## [Unreleased] - [unreleased]
+
+### Modified
+- Simplified layout of GIF display
+
+## [0.0.0] - 2015-09-02
 Initial release
+
+### Added
+- Cached Imgur crawler
+- Comparative ranking of pictures with Redis db backend
