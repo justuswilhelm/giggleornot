@@ -3,6 +3,7 @@
 ## [Unreleased] - [unreleased]
 
 ### Added
+- Viewport tag
 - Optimizely support
 
 ### Modified
