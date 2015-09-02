@@ -5,7 +5,7 @@ from images import get_images
 from gon import app
 
 
-@app.cache.cached(key_prefix='get_image_ranking', timeout=30)
+@app.cache.cached(key_prefix='get_image_ranking', timeout=10)
 def get_image_ranking():
     return sorted(
         list(map(lambda x: (x[0].decode(), int(x[1])),
