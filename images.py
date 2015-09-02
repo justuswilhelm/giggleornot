@@ -8,13 +8,17 @@ from imgurpython.imgur.models.gallery_image import GalleryImage
 
 from gon import app
 
+TIMEOUT = 60 * 15
+
 logger = getLogger(__name__)
 client = ImgurClient(
     getenv('IMGUR_CLIENT_ID'), getenv('IMGUR_CLIENT_SECRET'))
+gallery = app.cache.memoize(timeout=TIMEOUT)(
+    lambda page: client.gallery(page=page))
 
 
 # Example request
-@app.cache.cached(key_prefix='get_images', timeout=60 * 15)
+@app.cache.cached(key_prefix='get_images', timeout=TIMEOUT)
 def get_images():
     """
     Get animated images from imgur.
@@ -24,6 +28,6 @@ def get_images():
     return list(filter(
         lambda item: item.animated, filter(
             lambda item: isinstance(item, GalleryImage),
-            reduce(add, (client.gallery(page=i) for i in range(10)))
+            reduce(add, (gallery(i) for i in range(10)))
         ))
     )
