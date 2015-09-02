@@ -27,8 +27,3 @@ def get_images():
             reduce(add, (client.gallery(page=i) for i in range(10)))
         ))
     )
-
-
-if __name__ == "__main__":
-    for i in get_images():
-        print(i.link)
