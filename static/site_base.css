@@ -10,3 +10,7 @@ video {
   max-width: 100%;
   box-sizing: border-box;
 }
+
+.logo {
+  margin-bottom: 40px;
+}
