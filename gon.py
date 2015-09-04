@@ -14,9 +14,9 @@ __version__ = "Unreleased"
 app = Flask(__name__)
 app.debug = 'DEBUG' in environ
 app.secret_key = environ['SECRET_KEY']
-app.config.USERSNAP_KEY = environ['USERSNAP_KEY']
-app.config.GA_ID = environ['GA_ID']
-app.config.OPTIMIZELY_KEY = environ['OPTIMIZELY_KEY']
+app.config.USERSNAP_KEY = getenv('USERSNAP_KEY')
+app.config.GA_ID = getenv('GA_ID')
+app.config.OPTIMIZELY_KEY = getenv('OPTIMIZELY_KEY')
 cache = Cache(app, config={
     'CACHE_TYPE': 'redis',
     'CACHE_REDIS_URL': getenv('REDIS_URL', 'redis://localhost:6379/'),

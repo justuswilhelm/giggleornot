@@ -1,4 +1,6 @@
 machine:
+  environment:
+    SECRET_KEY: CI
   python:
     version: 3.4.2
 
