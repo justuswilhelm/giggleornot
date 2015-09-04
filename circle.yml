@@ -6,11 +6,10 @@ machine:
 
 test:
   pre:
-    - redis-server&
+    - redis-server:
+      background: true
   override:
     - python -m unittest test.py
-  post:
-    - killall redis-server
 
 deployment:
   development:
