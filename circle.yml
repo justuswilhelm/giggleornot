@@ -7,7 +7,7 @@ machine:
 test:
   pre:
     - redis-server:
-      background: true
+        background: true
   override:
     - python -m unittest test.py
 
