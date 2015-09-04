@@ -12,9 +12,14 @@
   </head>
   <body>
     <div class="container">
-      <h1>
-        twogifs, and you pick one
-      </h1>
+      <div class="row">
+        <div class="offset-by-three six columns">
+          <a href="/">
+            <img class="u-max-full-width"
+            src="{{ url_for('static', filename='logo.png') }}" alt="two gifs">
+          </a>
+        </div>
+      </div>
       {% include "_flash.html" %}
       {% block content %}{% endblock content %}
       <footer>
