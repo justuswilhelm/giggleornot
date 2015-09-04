@@ -2,7 +2,11 @@ test:
   override:
     - echo "No Test"
 deployment:
-  staging:
+  development:
+    branch: development
+    heroku:
+      appname: twogifs-development
+  production:
     branch: master
     heroku:
-      appname: giggle
+      appname: twogifs
