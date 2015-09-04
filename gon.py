@@ -4,16 +4,8 @@ from os import (
     getenv,
 )
 
-from flask import (
-    Flask,
-    redirect,
-    render_template,
-    request,
-    send_from_directory,
-)
+from flask import Flask
 from flask.ext.cache import Cache
-from redis import Redis
-from imgurpython.helpers.error import ImgurClientError
 
 __version__ = "Unreleased"
 
@@ -25,48 +17,14 @@ app.secret_key = environ['SECRET_KEY']
 app.config.USERSNAP_KEY = environ['USERSNAP_KEY']
 app.config.GA_ID = environ['GA_ID']
 app.config.OPTIMIZELY_KEY = environ['OPTIMIZELY_KEY']
+cache = Cache(app, config={
+    'CACHE_TYPE': 'redis',
+    'CACHE_REDIS_URL': getenv('REDIS_URL', 'redis://localhost:6379/'),
+})
 
-# Redis
-app.cache = Cache(
-    app, config={
-        'CACHE_TYPE': 'redis',
-        'CACHE_REDIS_URL': getenv('REDIS_URL', 'redis://localhost:6379/'),
-    })
-app.db = Redis.from_url(getenv('REDIS_URL', 'redis://localhost:6379/'))
+from data import ImageRanking
+import views  # noqa
 
-from data import (
-    get_image_sample,
-    get_image_ranking,
-    upvote_image,
-    downvote_image,
-)
-
-
-# Views
-@app.route('/robots.txt')
-@app.route('/favicon.ico')
-def static_from_root():
-    return send_from_directory(app.static_folder, request.path[1:])
-
-
-@app.route("/")
-def index():
-    if 'yay' in request.args:
-        upvote_image(request.args['yay'])
-        downvote_image(request.args['nay'])
-
-    # Get two random images
-    try:
-        images = get_image_sample()
-    except ImgurClientError:
-        return redirect('/?ref=imgur-client-error')
-
-    return render_template(
-        'index.html',
-        images=images,
-        ranking=get_image_ranking()[:5],
-    )
-
-
+app.image_ranking = ImageRanking()
 if __name__ == "__main__":
     app.run(debug=True)

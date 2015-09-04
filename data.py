@@ -1,34 +1,36 @@
-from operator import itemgetter
+from os import getenv
 from random import sample
 
-from images import get_images
-from gon import app
+from redis import Redis
+
+from images import ImageRetriever
 
 
-@app.cache.cached(key_prefix='get_image_ranking', timeout=10)
-def get_image_ranking():
-    return sorted(
-        list(map(lambda x: (x[0].decode(), int(x[1])),
-                 app.db.hgetall('images').items())),
-        reverse=True, key=itemgetter(1))
+class ImageRanking:
 
+    UPVOTE = 1
+    DOWNVOTE = -1
+    KEY_NAME = 'image_scores'
 
-def get_image_sample(count=2):
-    images = get_images()
-    return list(
-        map(images.__getitem__, sample(range(0, len(images) - 1), count)))
+    def __init__(self):
+        self.db = Redis.from_url(
+            getenv('REDIS_URL', 'redis://localhost:6379/'))
+        self.image_retriever = ImageRetriever()
 
+    def get_image_ranking(self):
+        return [(e[0].decode(), e[1]) for e in self.db.zrevrangebyscore(
+            self.KEY_NAME, 'inf', 0, withscores=True, score_cast_func=int)]
 
-# Image model
-def image_score(image_id):
-    if image_id in app.db.hgetall('images'):
-        return app.db.hget('images', image_id)
-    return 0
+    def get_image_sample(self, count=2):
+        images = self.image_retriever.get_images()
+        return list(
+            map(images.__getitem__, sample(range(0, len(images) - 1), count)))
 
+    def image_score(self, image_id):
+        return self.db.zscore(self.KEY_NAME, image_id) or 0
 
-def upvote_image(image_id):
-    app.db.hincrby('images', image_id, 1)
+    def upvote_image(self, image_id):
+        self.db.zincrby(self.KEY_NAME, image_id, self.UPVOTE)
 
-
-def downvote_image(image_id):
-    app.db.hincrby('images', image_id, -1)
+    def downvote_image(self, image_id):
+        self.db.zincrby(self.KEY_NAME, image_id, self.DOWNVOTE)
