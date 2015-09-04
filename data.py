@@ -10,7 +10,7 @@ class ImageRanking:
 
     UPVOTE = 1
     DOWNVOTE = -1
-    MIN_SCORE = 0
+    MIN_SCORE = -2
     KEY_NAME = 'image_scores'
 
     def __init__(self):
@@ -19,7 +19,7 @@ class ImageRanking:
         self.image_retriever = ImageRetriever()
 
     def filter_images(self, min_score=MIN_SCORE):
-        images = self.image_retriever.get_images(1)
+        images = self.image_retriever.get_images(10)
         scores = dict(self.get_scores())
         for i in images:
             i.score = scores.get(i.id, 0)
