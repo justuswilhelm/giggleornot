@@ -1,12 +1,12 @@
-<a class="vote" href="/?ref=vote&image={{ image.id }}">
-  {% with gif_id=image.id %}
+<a class="vote" href="/?ref=vote&yay={{ yay.id }}&nay={{ nay.id }}">
+  {% with gif_id=yay.id %}
     {% include "_gif_tag.html" %}
   {% endwith %}
 </a>
 <p>
-  {{ image.title }}
+  {{ yay.title }}
   <small>
-    <a href="https://imgur.com/{{ image.id }}" target="_blank">
+    <a href="https://imgur.com/{{ yay.id }}" target="_blank">
       Source
     </a>
   </small>

@@ -37,7 +37,8 @@ app.db = Redis.from_url(getenv('REDIS_URL', 'redis://localhost:6379/'))
 from data import (
     get_image_sample,
     get_image_ranking,
-    db_incr,
+    upvote_image,
+    downvote_image,
 )
 
 
@@ -50,8 +51,9 @@ def static_from_root():
 
 @app.route("/")
 def index():
-    if 'image' in request.args:
-        db_incr(request.args['image'])
+    if 'yay' in request.args:
+        upvote_image(request.args['yay'])
+        downvote_image(request.args['nay'])
 
     # Get two random images
     try:

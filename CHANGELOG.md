@@ -5,6 +5,7 @@
 ### Added
 - Viewport tag
 - Optimizely support
+- Downvoting of non-chosen picture
 
 ### Modified
 - Error handling more 'honest'

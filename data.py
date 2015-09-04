@@ -20,8 +20,15 @@ def get_image_sample(count=2):
 
 
 # Image model
-db_get = lambda image_id: int(app.db.hget('images', image_id) or 0)
+def image_score(image_id):
+    if image_id in app.db.hgetall('images'):
+        return app.db.hget('images', image_id)
+    return 0
 
 
-def db_incr(image_id):
+def upvote_image(image_id):
     app.db.hincrby('images', image_id, 1)
+
+
+def downvote_image(image_id):
+    app.db.hincrby('images', image_id, -1)
