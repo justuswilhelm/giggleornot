@@ -22,7 +22,7 @@ class ImageRetriever:
 
 # Example request
     @cache.memoize(timeout=TIMEOUT)
-    def get_images(self):
+    def get_images(self, no_pages=10):
         """
         Get animated images from imgur.
 
@@ -31,6 +31,6 @@ class ImageRetriever:
         return list(filter(
             lambda item: item.animated, filter(
                 lambda item: isinstance(item, GalleryImage),
-                reduce(add, (self.gallery(i) for i in range(10)))
+                reduce(add, (self.gallery(i) for i in range(no_pages)))
             ))
         )

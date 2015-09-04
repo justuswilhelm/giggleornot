@@ -1,6 +1,10 @@
 test:
+  pre:
+    - redis-server&
   override:
-    - echo "No Test"
+    - python3 -m unittest test.py
+  post:
+    - killall redis-server
 deployment:
   development:
     branch: development
