@@ -1,10 +1,15 @@
+machine:
+  python:
+    version: 3.4.2
+
 test:
   pre:
     - redis-server&
   override:
-    - python3 -m unittest test.py
+    - python -m unittest test.py
   post:
     - killall redis-server
+
 deployment:
   development:
     branch: development
