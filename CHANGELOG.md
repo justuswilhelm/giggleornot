@@ -3,6 +3,7 @@
 ## [Unreleased] - [unreleased]
 
 ### Added
+- New logo
 - Viewport tag
 - Optimizely support
 - Downvoting of non-chosen picture
@@ -10,6 +11,7 @@
 ### Modified
 - Error handling more 'honest'
 - Simplified voting path
+- Simplified image score data model
 - Simplified layout of GIF display
 - Simplify log output
 
