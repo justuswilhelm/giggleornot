@@ -18,6 +18,9 @@
 ### Fixed
 - Proper catching of imgur client errors
 
+### Removed
+- Usersnap
+
 ## [0.0.0] - 2015-09-02
 Initial release
 
