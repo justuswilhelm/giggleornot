@@ -19,3 +19,7 @@ video {
   background-color: #3A5197;
   color: #FDFDFD;
 }
+
+.float-right {
+  float: right;
+}
