@@ -27,7 +27,7 @@ class ImageRanking:
 
     def get_scores(self):
         return ((e[0].decode(), e[1]) for e in self.db.zrange(
-            self.KEY_NAME, 0, -1, withscores=True, score_cast_func=int))
+            self.KEY_NAME, 0, -1, withscores=True))
 
     def get_image_with_score(self, image_id):
         img = self.image_retriever.get_image(image_id)
@@ -36,8 +36,7 @@ class ImageRanking:
 
     def get_image_ranking(self):
         return [(e[0].decode(), e[1]) for e in self.db.zrevrangebyscore(
-            self.KEY_NAME, 'inf', '-inf',
-            withscores=True, score_cast_func=int)]
+            self.KEY_NAME, 'inf', '-inf', withscores=True)]
 
     def get_image_sample(self, count=2):
         images = list(self.filter_images())
