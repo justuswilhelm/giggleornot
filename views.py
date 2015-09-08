@@ -34,3 +34,27 @@ def index():
         images=images,
         ranking=current_app.image_ranking.get_image_ranking()[:5],
     )
+
+
+@app.route("/<left>")
+def compare_one(left):
+    images = [current_app.image_ranking.get_image_with_score(
+        left)] + current_app.image_ranking.get_image_sample(1)
+    return render_template(
+        'index.html',
+        images=images,
+        ranking=current_app.image_ranking.get_image_ranking()[:5],
+    )
+
+
+@app.route("/<left>/<right>")
+def compare_two(left, right):
+    images = [
+        current_app.image_ranking.get_image_with_score(left),
+        current_app.image_ranking.get_image_with_score(right),
+    ]
+    return render_template(
+        'index.html',
+        images=images,
+        ranking=current_app.image_ranking.get_image_ranking()[:5],
+    )

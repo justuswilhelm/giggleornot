@@ -5,6 +5,7 @@ from os import getenv
 
 from imgurpython import ImgurClient
 from imgurpython.imgur.models.gallery_image import GalleryImage
+from werkzeug.exceptions import NotFound
 
 from gon import cache
 
@@ -34,3 +35,10 @@ class ImageRetriever:
                 reduce(add, (self.gallery(i) for i in range(no_pages)))
             ))
         )
+
+    @cache.memoize(timeout=TIMEOUT)
+    def get_image(self, image_id):
+        for image in self.get_images():
+            if image.id == image_id:
+                return image
+        raise NotFound('{} could not be found'.format(image_id))

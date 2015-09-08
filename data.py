@@ -19,7 +19,7 @@ class ImageRanking:
         self.image_retriever = ImageRetriever()
 
     def filter_images(self, min_score=MIN_SCORE):
-        images = self.image_retriever.get_images(10)
+        images = self.image_retriever.get_images()
         scores = dict(self.get_scores())
         for i in images:
             i.score = scores.get(i.id, 0)
@@ -28,6 +28,11 @@ class ImageRanking:
     def get_scores(self):
         return ((e[0].decode(), e[1]) for e in self.db.zrange(
             self.KEY_NAME, 0, -1, withscores=True, score_cast_func=int))
+
+    def get_image_with_score(self, image_id):
+        img = self.image_retriever.get_image(image_id)
+        img.score = self.image_score(image_id)
+        return img
 
     def get_image_ranking(self):
         return [(e[0].decode(), e[1]) for e in self.db.zrevrangebyscore(
