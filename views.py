@@ -58,3 +58,11 @@ def compare_two(left, right):
         images=images,
         ranking=current_app.image_ranking.get_image_ranking()[:5],
     )
+
+
+@app.route("/ranking")
+def ranking():
+    return render_template(
+        'ranking.html',
+        ranking=current_app.image_ranking.get_image_ranking(),
+    )
