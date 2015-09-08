@@ -1,5 +1,5 @@
 <a class="vote" href="/?ref=vote&yay={{ yay.id }}&nay={{ nay.id }}">
-  {% with gif_id=yay.id %}
+  {% with gif=yay%}
     {% include "_gif_tag.html" %}
   {% endwith %}
 </a>
