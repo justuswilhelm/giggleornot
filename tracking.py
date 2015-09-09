@@ -21,10 +21,13 @@ def track_vote(up, down):
         [user_id(), 'vote', {'up': up, 'down': down}]
     )
     pool.apply_async(
-        mp.people_set, [
-            user_id(),
-            {'likes': up, 'dislikes': down},
-        ])
+        mp.people_increment,
+        [user_id(), {'votes': 1}]
+    )
+    pool.apply_async(
+        mp.people_append,
+        [user_id(), {'likes': up, 'dislikes': down}]
+    )
 
 
 def track_new_user():
