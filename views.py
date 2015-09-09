@@ -82,7 +82,7 @@ def ranking():
 
 @app.before_request
 def check_session():
-    if 'uid' not in session:
+    if 'uid' not in session and request.method is not 'HEAD':
         session.permanent = True
         session['uid'] = str(uuid4())
         track_new_user()
