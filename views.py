@@ -88,6 +88,5 @@ def check_session():
 
 
 @app.before_request
-def page_view(response):
+def request():
     track_request(request.path, **request.args)
-    return response
