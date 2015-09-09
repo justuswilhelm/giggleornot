@@ -31,9 +31,18 @@ def index():
     if {'yay', 'nay'}.issubset(request.args.keys()):
         yay = request.args['yay']
         nay = request.args['nay']
-        image_ranking.upvote_image(yay)
-        image_ranking.downvote_image(nay)
-        track_vote(yay, nay)
+        key = '{}:{}'.format(request.access_route, sorted((yay, nay)))
+
+        if key not in app.db:
+            image_ranking.upvote_image(yay)
+            image_ranking.downvote_image(nay)
+            track_vote(yay, nay)
+            pipe = app.db.pipeline()
+            pipe.set(key, '')
+            pipe.expire(key, 30)
+            pipe.execute()
+        else:
+            app.logger.warning('Rate limiting for {}'.format(key))
 
     # Get two random images
     try:
