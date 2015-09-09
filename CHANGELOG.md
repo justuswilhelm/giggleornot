@@ -1,12 +1,13 @@
 # Change Log
 
-## [Unreleased] - [unreleased]
+## [1.0.0] - 2015-09-09
 
 ### Added
 - New logo
 - Viewport tag
 - Optimizely support
 - Downvoting of non-chosen picture
+- Vote/New User tracking on mixpanel
 
 ### Modified
 - Error handling more 'honest'

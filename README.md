@@ -16,16 +16,9 @@ foreman start
 ## Environment Variables
 Should reside in `.env` so that foreman can pick them up.
 
+- `GA_ID` ... Google Analytics ID
 - `IMGUR_CLIENT_ID` and `IMGUR_CLIENT_SECRET` ... can be retrieved in your app
   settings on https://api.imgur.com.
+- `MIXPANEL_TOKEN` ... Mixpanel Project Token
+- `OPTIMIZELY_KEY` ... Optimizely Key
 - `SECRET_KEY` ... set it to something secret.
-
-## Production Server
-```
-foreman start
-```
-
-## Development Server
-```
-foreman run python gon.py
-```
