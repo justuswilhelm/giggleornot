@@ -15,6 +15,10 @@ class ImageRankingTestCase(TestCase):
         down = MagicMock()
         down.id = 'down'
         self.ir.image_retriever.get_images.return_value = [up, down]
+
         self.ir.upvote_image('up', 10)
-        self.ir.downvote_image('down', -10)
+        self.ir.downvote_image('down', -20)
+
+        self.assertEqual(self.ir.image_score('up'), 10)
+        self.assertEqual(self.ir.image_score('down'), -20)
         self.assertEqual(self.ir.get_image_sample(), [up])

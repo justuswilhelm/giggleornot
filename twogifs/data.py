@@ -18,7 +18,7 @@ class ImageRanking:
         images = self.image_retriever.get_images()
         scores = self.get_scores()
         for i in images:
-            i.score = scores.get(i, 0)
+            i.score = scores.get(i.id, 0)
 
         return filter(lambda i: i.score > min_score, images)
 
@@ -36,9 +36,9 @@ class ImageRanking:
             self.KEY_NAME, 'inf', '-inf', withscores=True)]
 
     def get_image_sample(self, count=2):
-        images = list(self.filter_images())
+        images = list(self.filter_images())[:count]
         shuffle(images)
-        return images[:count]
+        return images
 
     def image_score(self, image_id):
         return app.db.zscore(self.KEY_NAME, image_id) or 0
