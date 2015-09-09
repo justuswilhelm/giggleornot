@@ -36,9 +36,9 @@ class ImageRanking:
             self.KEY_NAME, 'inf', '-inf', withscores=True)]
 
     def get_image_sample(self, count=2):
-        images = list(self.filter_images())[:count]
+        images = list(self.filter_images())
         shuffle(images)
-        return images
+        return images[:count]
 
     def image_score(self, image_id):
         return app.db.zscore(self.KEY_NAME, image_id) or 0
