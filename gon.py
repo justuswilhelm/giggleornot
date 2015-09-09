@@ -12,7 +12,7 @@ __version__ = "Unreleased"
 
 # Configuration
 app = Flask(__name__)
-app.debug = 'DEBUG' in environ
+app.debug = True
 app.secret_key = environ['SECRET_KEY']
 app.config.GA_ID = getenv('GA_ID')
 app.config.OPTIMIZELY_KEY = getenv('OPTIMIZELY_KEY')

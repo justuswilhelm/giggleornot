@@ -9,6 +9,11 @@ from imgurpython.helpers.error import ImgurClientError
 
 from gon import app
 
+from tracking import (
+    track_vote,
+    track_page_view,
+)
+
 
 # Views
 @app.route('/robots.txt')
@@ -20,8 +25,12 @@ def static_from_root():
 @app.route("/")
 def index():
     if {'yay', 'nay'}.issubset(request.args.keys()):
-        current_app.image_ranking.upvote_image(request.args['yay'])
-        current_app.image_ranking.downvote_image(request.args['nay'])
+        yay = request.args['yay']
+        nay = request.args['nay']
+        current_app.image_ranking.upvote_image(yay)
+        current_app.image_ranking.downvote_image(nay)
+        track_vote(yay, is_up=True)
+        track_vote(yay, is_up=False)
 
     # Get two random images
     try:
@@ -66,3 +75,9 @@ def ranking():
         'ranking.html',
         ranking=current_app.image_ranking.get_image_ranking(),
     )
+
+
+@app.after_request
+def page_view(response):
+    track_page_view(request.path, **request.args)
+    return response
