@@ -1,7 +1,10 @@
+from uuid import uuid4
+
 from flask import (
     current_app,
     request,
     send_from_directory,
+    session,
     render_template,
     redirect,
 )
@@ -75,6 +78,13 @@ def ranking():
         'ranking.html',
         ranking=current_app.image_ranking.get_image_ranking(),
     )
+
+
+@app.before_request
+def check_session():
+    if 'uid' not in session:
+        session.permanent = True
+        session['uid'] = str(uuid4())
 
 
 @app.after_request
