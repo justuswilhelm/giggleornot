@@ -16,6 +16,5 @@ def track_vote(image_id, is_up):
     pool.apply_async(mp.track, [user_id(), 'vote', {'image_id': image_id}])
 
 
-def track_request(page, **extra):
-    extra.update({'page': page})
-    pool.apply_async(mp.track, [user_id(), 'request', extra])
+def track_new_user():
+    pool.apply_async(mp.track, [user_id(), 'new_user'])

@@ -14,7 +14,7 @@ from gon import app
 
 from tracking import (
     track_vote,
-    track_request,
+    track_new_user,
 )
 
 
@@ -85,8 +85,4 @@ def check_session():
     if 'uid' not in session:
         session.permanent = True
         session['uid'] = str(uuid4())
-
-
-@app.before_request
-def request():
-    track_request(request.path, **request.args)
+        track_new_user()
