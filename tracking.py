@@ -15,10 +15,10 @@ pool = Pool(2)
 user_id = lambda: session.get('uid', 'anon')
 
 
-def track_vote(image_id, is_up):
+def track_vote(up, down):
     pool.apply_async(
         mp.track,
-        [user_id(), 'vote', {'image_id': image_id, 'is_up': is_up}]
+        [user_id(), 'vote', {'up': up, 'down': down}]
     )
 
 

@@ -32,8 +32,7 @@ def index():
         nay = request.args['nay']
         current_app.image_ranking.upvote_image(yay)
         current_app.image_ranking.downvote_image(nay)
-        track_vote(yay, is_up=True)
-        track_vote(nay, is_up=False)
+        track_vote(yay, nay)
 
     # Get two random images
     try:
