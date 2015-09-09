@@ -14,7 +14,7 @@ from gon import app
 
 from tracking import (
     track_vote,
-    track_page_view,
+    track_request,
 )
 
 
@@ -87,7 +87,7 @@ def check_session():
         session['uid'] = str(uuid4())
 
 
-@app.after_request
+@app.before_request
 def page_view(response):
-    track_page_view(request.path, **request.args)
+    track_request(request.path, **request.args)
     return response
