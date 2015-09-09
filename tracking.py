@@ -20,6 +20,11 @@ def track_vote(up, down):
         mp.track,
         [user_id(), 'vote', {'up': up, 'down': down}]
     )
+    pool.apply_async(
+        mp.people_set, [
+            user_id(),
+            {'likes': up, 'dislikes': down},
+        ])
 
 
 def track_new_user():
@@ -31,9 +36,4 @@ def track_new_user():
              '$browser_version': request.user_agent.version,
              '$initial_referrer': request.args.get('ref') or request.referrer,
              },
-        ])
-    pool.apply_async(
-        mp.people_set, [
-            user_id(),
-            {},
         ])
