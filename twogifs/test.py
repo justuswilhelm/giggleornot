@@ -1,7 +1,7 @@
 from unittest import TestCase
 from unittest.mock import MagicMock
 
-from gon import ImageRanking
+from .data import ImageRanking
 
 
 class ImageRankingTestCase(TestCase):

@@ -1,9 +1,7 @@
-from os import getenv
 from random import shuffle
 
-from redis import Redis
-
-from images import ImageRetriever
+from . import app
+from .images import ImageRetriever
 
 
 class ImageRanking:
@@ -14,19 +12,18 @@ class ImageRanking:
     KEY_NAME = 'image_scores'
 
     def __init__(self):
-        self.db = Redis.from_url(
-            getenv('REDIS_URL', 'redis://localhost:6379/'))
         self.image_retriever = ImageRetriever()
 
     def filter_images(self, min_score=MIN_SCORE):
         images = self.image_retriever.get_images()
-        scores = dict(self.get_scores())
+        scores = self.get_scores()
         for i in images:
-            i.score = scores.get(i.id, 0)
-        return filter(lambda i: i.score >= min_score, images)
+            i.score = scores.get(i, 0)
+
+        return filter(lambda i: i.score > min_score, images)
 
     def get_scores(self):
-        return ((e[0].decode(), e[1]) for e in self.db.zrange(
+        return dict((e[0].decode(), e[1]) for e in app.db.zrange(
             self.KEY_NAME, 0, -1, withscores=True))
 
     def get_image_with_score(self, image_id):
@@ -35,7 +32,7 @@ class ImageRanking:
         return img
 
     def get_image_ranking(self):
-        return [(e[0].decode(), e[1]) for e in self.db.zrevrangebyscore(
+        return [(e[0].decode(), e[1]) for e in app.db.zrevrangebyscore(
             self.KEY_NAME, 'inf', '-inf', withscores=True)]
 
     def get_image_sample(self, count=2):
@@ -44,10 +41,10 @@ class ImageRanking:
         return images[:count]
 
     def image_score(self, image_id):
-        return self.db.zscore(self.KEY_NAME, image_id) or 0
+        return app.db.zscore(self.KEY_NAME, image_id) or 0
 
     def upvote_image(self, image_id, score=UPVOTE):
-        self.db.zincrby(self.KEY_NAME, image_id, score)
+        app.db.zincrby(self.KEY_NAME, image_id, score)
 
     def downvote_image(self, image_id, score=DOWNVOTE):
-        self.db.zincrby(self.KEY_NAME, image_id, -abs(score))
+        app.db.zincrby(self.KEY_NAME, image_id, -abs(score))

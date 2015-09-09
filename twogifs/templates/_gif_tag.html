@@ -1,8 +1,8 @@
-{% if gif.size < 5242880 %}
-  <img src="//i.imgur.com/{{ gif.id }}.gif" width="100%">
+{% if gif.size < 3000000 %}
+  <img src="//i.imgur.com/{{ gif.id }}.gif" alt="{{ gif.id }}" width="100%">
 {% else %}
   <video controls="true" preload="auto" autoplay="autoplay" muted="muted" loop="loop"
-  webkit-playsinline="" width="100%">
+    webkit-playsinline="" width="100%">
     <source src="//i.imgur.com/{{ gif.id }}.mp4" type="video/mp4">
     <source src="//i.imgur.com/{{ gif.id }}.webm" type="video/webm">
   </video>

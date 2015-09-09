@@ -1,7 +1,6 @@
 from uuid import uuid4
 
 from flask import (
-    current_app,
     request,
     send_from_directory,
     session,
@@ -10,12 +9,14 @@ from flask import (
 )
 from imgurpython.helpers.error import ImgurClientError
 
-from gon import app
-
-from tracking import (
+from .data import ImageRanking
+from . import app
+from .tracking import (
     track_vote,
     track_new_user,
 )
+
+image_ranking = ImageRanking()
 
 
 # Views
@@ -30,44 +31,44 @@ def index():
     if {'yay', 'nay'}.issubset(request.args.keys()):
         yay = request.args['yay']
         nay = request.args['nay']
-        current_app.image_ranking.upvote_image(yay)
-        current_app.image_ranking.downvote_image(nay)
+        image_ranking.upvote_image(yay)
+        image_ranking.downvote_image(nay)
         track_vote(yay, nay)
 
     # Get two random images
     try:
-        images = current_app.image_ranking.get_image_sample()
+        images = image_ranking.get_image_sample()
     except ImgurClientError:
         return redirect('/?ref=imgur-client-error')
 
     return render_template(
         'index.html',
         images=images,
-        ranking=current_app.image_ranking.get_image_ranking()[:5],
+        ranking=image_ranking.get_image_ranking()[:5],
     )
 
 
 @app.route("/<left>")
 def compare_one(left):
-    images = [current_app.image_ranking.get_image_with_score(
-        left)] + current_app.image_ranking.get_image_sample(1)
+    images = [image_ranking.get_image_with_score(
+        left)] + image_ranking.get_image_sample(1)
     return render_template(
         'index.html',
         images=images,
-        ranking=current_app.image_ranking.get_image_ranking()[:5],
+        ranking=image_ranking.get_image_ranking()[:5],
     )
 
 
 @app.route("/<left>/<right>")
 def compare_two(left, right):
     images = [
-        current_app.image_ranking.get_image_with_score(left),
-        current_app.image_ranking.get_image_with_score(right),
+        image_ranking.get_image_with_score(left),
+        image_ranking.get_image_with_score(right),
     ]
     return render_template(
         'index.html',
         images=images,
-        ranking=current_app.image_ranking.get_image_ranking()[:5],
+        ranking=image_ranking.get_image_ranking()[:5],
     )
 
 
@@ -75,7 +76,7 @@ def compare_two(left, right):
 def ranking():
     return render_template(
         'ranking.html',
-        ranking=current_app.image_ranking.get_image_ranking(),
+        ranking=image_ranking.get_image_ranking(),
     )
 
 
