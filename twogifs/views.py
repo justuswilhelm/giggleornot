@@ -93,7 +93,7 @@ def ranking():
 def check_session():
     is_human = lambda: (
         request.method != 'HEAD' and
-        request.user_agent.browser != '')
+        request.user_agent.browser is not None)
     if 'uid' not in session and is_human():
         session.permanent = True
         session['uid'] = str(uuid4())
