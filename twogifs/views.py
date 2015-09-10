@@ -93,6 +93,11 @@ def ranking():
     )
 
 
+@app.route("/ping")
+def ping():
+    return "YESYES"
+
+
 @app.before_request
 def check_session():
     if not is_human():
