@@ -29,5 +29,5 @@ class IsHumanTestCase(TestCase):
 
     def test_block_seo_spam(self):
         response = self.app.get('/', environ_base={
-            'HTTP_REFERER': 'http://best-seo-report.com/'})
+            'HTTP_REFERER': 'http://best-seo-report.com'})
         self.assertEqual(response.status_code, 403)

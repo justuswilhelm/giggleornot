@@ -6,7 +6,7 @@ from flask import (
 from . import app
 
 referrer_blacklist = [
-    'http://best-seo-report.com/',
+    'http://best-seo-report.com',
     'http://www.twogifs.com/?ref=amaze',
 ]
 is_human = lambda: all([
