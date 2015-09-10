@@ -15,16 +15,14 @@ from .tracking import (
     track_vote,
     track_new_user,
 )
+from .spam_filter import (
+    is_human,
+    has_valid_session,
+    rate_limit,
+    is_rate_limited,
+)
 
 image_ranking = ImageRanking()
-
-is_human = lambda: (
-    request.method != 'HEAD' and
-    request.user_agent.browser is not None and
-    request.args.get('ref', '') != 'amaze' and
-    request.referrer != 'http://best-seo-report.com/'
-)
-has_valid_session = lambda: 'uid' in session
 
 
 # Views
@@ -39,16 +37,13 @@ def index():
     if {'yay', 'nay'}.issubset(request.args.keys()) and has_valid_session():
         yay = request.args['yay']
         nay = request.args['nay']
-        key = '{}:{}'.format(request.access_route, sorted((yay, nay)))
+        key = sorted((yay, nay))
 
-        if key not in app.db:
+        if is_rate_limited(key):
             image_ranking.upvote_image(yay)
             image_ranking.downvote_image(nay)
             track_vote(yay, nay)
-            pipe = app.db.pipeline()
-            pipe.set(key, '')
-            pipe.expire(key, 30)
-            pipe.execute()
+            rate_limit(key)
         else:
             app.logger.warning('Rate limiting for {}'.format(key))
 
