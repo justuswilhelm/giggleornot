@@ -40,7 +40,3 @@ def track_new_user():
              '$initial_referrer': request.args.get('ref') or request.referrer,
              },
         ])
-    pool.apply_async(
-        mp.people_set,
-        [user_id(), {}]
-    )
