@@ -100,6 +100,8 @@ def ping():
 
 @app.before_request
 def check_session():
+    if request.path == '/ping':
+        return
     if not is_human():
         abort(403)
     if not has_valid_session():
