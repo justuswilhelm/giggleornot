@@ -1,6 +1,7 @@
 from uuid import uuid4
 
 from flask import (
+    abort,
     request,
     send_from_directory,
     session,
@@ -8,7 +9,6 @@ from flask import (
     redirect,
 )
 from imgurpython.helpers.error import ImgurClientError
-from werkzeug.exceptions import Forbidden
 
 from .data import ImageRanking
 from . import app
@@ -96,7 +96,7 @@ def ranking():
 @app.before_request
 def check_session():
     if not is_human():
-        raise Forbidden()
+        abort(403)
     if not has_valid_session():
         create_session()
 

@@ -1,0 +1,5 @@
+#!/bin/bash
+redis-server --save "" >/dev/null &
+redis_pid="$!"
+foreman run python -m unittest twogifs/test/*.py
+kill "$redis_pid"

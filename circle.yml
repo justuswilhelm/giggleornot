@@ -9,7 +9,7 @@ test:
     - redis-server:
         background: true
   override:
-    - python -m unittest twogifs.test
+    - python -m unittest twogifs/test/*.py
 
 deployment:
   development:
