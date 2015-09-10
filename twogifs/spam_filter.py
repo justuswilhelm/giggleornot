@@ -13,8 +13,9 @@ is_human = lambda: (
     request.method != 'HEAD' and
     request.user_agent.browser is not None and
     request.args.get('ref', '') != 'amaze' and
-    request.referrer not in referrer_blacklist,
+    request.referrer not in referrer_blacklist
 )
+
 has_valid_session = lambda: 'uid' in session
 
 rate_limit_key = lambda key: '{}:{}'.format(request.access_route, key)
