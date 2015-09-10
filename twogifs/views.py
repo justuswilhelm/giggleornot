@@ -108,11 +108,6 @@ def check_session():
         create_session()
 
 
-@app.errorhandler(403)
-def handle_error():
-    return ''
-
-
 def create_session():
     session.permanent = True
     session['uid'] = str(uuid4())
