@@ -8,6 +8,7 @@ from flask import (
     redirect,
 )
 from imgurpython.helpers.error import ImgurClientError
+from werkzeug.exceptions import Forbidden
 
 from .data import ImageRanking
 from . import app
@@ -94,7 +95,9 @@ def ranking():
 
 @app.before_request
 def check_session():
-    if not has_valid_session() and is_human():
+    if not is_human():
+        raise Forbidden()
+    if not has_valid_session():
         create_session()
 
 

@@ -9,12 +9,12 @@ referrer_blacklist = [
     'http://best-seo-report.com/',
     'http://www.twogifs.com/?ref=amaze',
 ]
-is_human = lambda: (
-    request.method != 'HEAD' and
-    request.user_agent.browser is not None and
-    request.args.get('ref', '') != 'amaze' and
-    request.referrer not in referrer_blacklist
-)
+is_human = lambda: all([
+    request.method != 'HEAD',
+    request.user_agent.browser is not None,
+    request.args.get('ref', '') != 'amaze',
+    request.referrer not in referrer_blacklist,
+])
 
 has_valid_session = lambda: 'uid' in session
 
