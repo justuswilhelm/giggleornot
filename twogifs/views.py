@@ -21,7 +21,7 @@ image_ranking = ImageRanking()
 is_human = lambda: (
     request.method != 'HEAD' and
     request.user_agent.browser is not None and
-    request.args['ref'] != 'amaze' and
+    request.args.get('ref', '') != 'amaze' and
     request.referrer != 'http://best-seo-report.com/'
 )
 has_valid_session = lambda: 'uid' in session
