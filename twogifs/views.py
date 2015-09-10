@@ -91,8 +91,10 @@ def ranking():
 
 @app.before_request
 def check_session():
-    is_new_user = lambda: 'yay' in request.args and 'uid' not in session
-    if is_new_user() and request.method != 'HEAD':
+    is_human = lambda: (
+        request.method != 'HEAD' and
+        request.user_agent.browser != '')
+    if 'uid' not in session and is_human():
         session.permanent = True
         session['uid'] = str(uuid4())
         track_new_user()
