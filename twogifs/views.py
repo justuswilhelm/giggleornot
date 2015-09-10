@@ -18,6 +18,14 @@ from .tracking import (
 
 image_ranking = ImageRanking()
 
+is_human = lambda: (
+    request.method != 'HEAD' and
+    request.user_agent.browser is not None and
+    request.args['ref'] != 'amaze' and
+    request.referrer != 'http://best-seo-report.com/'
+)
+has_valid_session = lambda: 'uid' in session
+
 
 # Views
 @app.route('/robots.txt')
@@ -28,7 +36,7 @@ def static_from_root():
 
 @app.route("/")
 def index():
-    if {'yay', 'nay'}.issubset(request.args.keys()):
+    if {'yay', 'nay'}.issubset(request.args.keys()) and has_valid_session():
         yay = request.args['yay']
         nay = request.args['nay']
         key = '{}:{}'.format(request.access_route, sorted((yay, nay)))
@@ -91,10 +99,11 @@ def ranking():
 
 @app.before_request
 def check_session():
-    is_human = lambda: (
-        request.method != 'HEAD' and
-        request.user_agent.browser is not None)
-    if 'uid' not in session and is_human():
-        session.permanent = True
-        session['uid'] = str(uuid4())
-        track_new_user()
+    if not has_valid_session() and is_human():
+        create_session()
+
+
+def create_session():
+    session.permanent = True
+    session['uid'] = str(uuid4())
+    track_new_user()
