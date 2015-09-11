@@ -6,9 +6,7 @@ from flask import (
     send_from_directory,
     session,
     render_template,
-    redirect,
 )
-from imgurpython.helpers.error import ImgurClientError
 
 from .data import ImageRanking
 from . import app
@@ -51,10 +49,7 @@ def index():
             app.logger.warning('Rate limiting for {}'.format(key))
 
     # Get two random images
-    try:
-        images = image_ranking.get_image_sample()
-    except ImgurClientError:
-        return redirect('/?ref=imgur-client-error')
+    images = image_ranking.get_image_sample()
 
     return render_template(
         'index.html',
