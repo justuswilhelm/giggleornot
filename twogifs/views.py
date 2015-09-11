@@ -45,6 +45,7 @@ def index():
             image_ranking.downvote_image(nay)
             track_vote(request, session, yay, nay)
             rate_limit(session, key)
+            session['score'] = session.get('score', 0) + 1
         else:
             app.logger.warning('Rate limiting for {}'.format(key))
 

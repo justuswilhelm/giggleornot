@@ -23,6 +23,9 @@
             src="{{ url_for('static', filename='logo.png') }}" alt="two gifs">
           </a>
         </div>
+        <div class="three columns">
+          {% include "_user.html" %}
+        </div>
       </div>
       {% include "_flash.html" %}
       {% block content %}{% endblock content %}
