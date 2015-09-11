@@ -13,7 +13,7 @@ request_metadata = lambda request: {
     '$browser': request.user_agent.browser,
     '$browser_version': request.user_agent.version,
     '$initial_referrer': request.args.get('ref', request.referrer),
-    '$ip': request.access_route[0], }
+    'ip': request.access_route[0], }
 
 
 def track_vote(request, session, up, down):
