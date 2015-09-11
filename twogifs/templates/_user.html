@@ -1,7 +1,13 @@
 {% if session.score %}
   <h5 class="unicorn" data-score="{{ session.score }}">
     Your GIFScore: {{ session.score }}
-    Keep voting!
+    {% if session.score >= 50 %}
+      Unprecedented GIFScore!
+    {% elif session.score >= 10 %}
+      Make that Rainbow faster!
+    {% elif session.score >= 2 %}
+      Keep voting!
+    {% endif %}
   </h5>
   <script>
     var $uni = document.getElementsByClassName('unicorn')[0];
