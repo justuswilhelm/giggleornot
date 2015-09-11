@@ -1,6 +1,5 @@
 ## The following requirements were added by pip freeze:
 Flask==0.10.1
-flask-cache==0.13.1
 gunicorn==19.3.0
 imgurpython==1.1.6
 mixpanel==4.1.0
