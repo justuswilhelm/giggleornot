@@ -43,7 +43,7 @@ def index():
         if is_rate_limited(key):
             image_ranking.upvote_image(yay)
             image_ranking.downvote_image(nay)
-            track_vote(yay, nay)
+            track_vote(request, yay, nay)
             rate_limit(key)
         else:
             app.logger.warning('Rate limiting for {}'.format(key))
@@ -111,4 +111,4 @@ def check_session():
 def create_session():
     session.permanent = True
     session['uid'] = str(uuid4())
-    track_new_user()
+    track_new_user(request, session)
