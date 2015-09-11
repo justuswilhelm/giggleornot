@@ -27,7 +27,11 @@ class ImageRanking:
             self.KEY_NAME, 0, -1, withscores=True))
 
     def get_image_with_score(self, image_id):
-        img = self.image_retriever.get_image(image_id)
+        try:
+            img = self.image_retriever.get_image(image_id)
+        except KeyError:
+            img = self.get_image_sample(1)[0]
+
         img.score = self.image_score(image_id)
         return img
 

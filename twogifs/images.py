@@ -34,4 +34,7 @@ class ImageRetriever:
         return list(map(loads, app.db.hvals('images')))
 
     def get_image(self, image_id):
-        return loads(app.db.hget('images', image_id))
+        try:
+            return loads(app.db.hget('images', image_id))
+        except TypeError:
+            raise KeyError()
