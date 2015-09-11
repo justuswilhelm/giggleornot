@@ -31,4 +31,4 @@ def rate_limit(key):
     pipe.execute()
 
 
-is_rate_limited = lambda key: rate_limit_key(key) not in app.db
+is_rate_limited = lambda key: rate_limit_key(key) in app.db

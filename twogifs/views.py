@@ -41,7 +41,7 @@ def index():
         nay = request.args['nay']
         key = sorted((yay, nay))
 
-        if is_rate_limited(key):
+        if not is_rate_limited(key):
             image_ranking.upvote_image(yay)
             image_ranking.downvote_image(nay)
             track_vote(request, session, yay, nay)
