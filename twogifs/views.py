@@ -36,16 +36,17 @@ def static_from_root():
 
 @app.route("/")
 def index():
-    if {'yay', 'nay'}.issubset(request.args.keys()) and has_valid_session():
+    is_vote = lambda: {'yay', 'nay'}.issubset(request.args.keys())
+    if is_vote() and has_valid_session(session):
         yay = request.args['yay']
         nay = request.args['nay']
         key = sorted((yay, nay))
 
-        if not is_rate_limited(key):
+        if not is_rate_limited(session, key):
             image_ranking.upvote_image(yay)
             image_ranking.downvote_image(nay)
             track_vote(request, session, yay, nay)
-            rate_limit(key)
+            rate_limit(session, key)
         else:
             app.logger.warning('Rate limiting for {}'.format(key))
 
@@ -101,11 +102,11 @@ def ping():
 
 @app.before_request
 def check_session():
-    if request.path == '/ping' or is_crawler():
+    if request.path == '/ping' or is_crawler(request):
         return
-    if not is_human():
+    if not is_human(request):
         abort(403)
-    if not has_valid_session():
+    if not has_valid_session(session):
         create_session()
 
 
