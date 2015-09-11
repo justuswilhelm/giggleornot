@@ -1,7 +1,13 @@
 {% if session.score %}
   <h5 class="unicorn" data-score="{{ session.score }}">
     Your GIFScore: {{ session.score }}
-    {% if session.score >= 50 %}
+    {% if session.score >= 500 %}
+      When will this stop?!
+    {% elif session.score >= 200 %}
+      Don't you need to sleep?
+    {% elif session.score >= 100 %}
+      You have no life!
+    {% elif session.score >= 50 %}
       Unprecedented GIFScore!
     {% elif session.score >= 10 %}
       Make that Rainbow faster!
