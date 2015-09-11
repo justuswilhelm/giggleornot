@@ -44,7 +44,7 @@ def index():
         if is_rate_limited(key):
             image_ranking.upvote_image(yay)
             image_ranking.downvote_image(nay)
-            track_vote(request, yay, nay)
+            track_vote(request, session, yay, nay)
             rate_limit(key)
         else:
             app.logger.warning('Rate limiting for {}'.format(key))
