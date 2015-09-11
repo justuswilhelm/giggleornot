@@ -18,6 +18,7 @@ from .tracking import (
 )
 from .spam_filter import (
     is_human,
+    is_crawler,
     has_valid_session,
     rate_limit,
     is_rate_limited,
@@ -100,7 +101,7 @@ def ping():
 
 @app.before_request
 def check_session():
-    if request.path == '/ping':
+    if request.path == '/ping' or is_crawler():
         return
     if not is_human():
         abort(403)
