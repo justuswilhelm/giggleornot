@@ -21,7 +21,8 @@ def track_vote(request, session, up, down):
     properties.update({'up': up, 'down': down})
 
     pool.apply_async(mp.track, [user_id(session), 'vote', properties])
-    pool.apply_async(mp.people_set, [user_id(session), {}])
+    pool.apply_async(mp.people_set, [user_id(session), {
+        '$ip': properties['ip']}])
     pool.apply_async(mp.people_increment, [user_id(session), {'votes': 1}])
 
 
