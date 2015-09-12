@@ -19,15 +19,15 @@ class IsHumanTestCase(TestCase):
         app.wsgi_app = FlaskTestClientProxy(app.wsgi_app)
         self.app = app.test_client()
 
-    def test_does_not_block_browser(self):
+    def test_browser_receives_cookid(self):
         response = self.app.get('/')
-        self.assertEqual(response.status_code, 200)
+        self.assertNotEqual(response.headers.getlist('Set-Cookie'), [])
 
-    def test_block_amaze(self):
+    def test_amaze_receives_no_cookie(self):
         response = self.app.get('/?ref=amaze')
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.headers.getlist('Set-Cookie'), [])
 
-    def test_block_seo_spam(self):
+    def test_seo_spam_receives_no_cookie(self):
         response = self.app.get('/', environ_base={
             'HTTP_REFERER': 'http://best-seo-report.com'})
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.headers.getlist('Set-Cookie'), [])
