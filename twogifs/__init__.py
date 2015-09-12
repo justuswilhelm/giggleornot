@@ -11,7 +11,6 @@ app = Flask(__name__)
 
 DEBUG = 'DEBUG' in environ
 GA_ID = getenv('GA_ID')
-OPTIMIZELY_KEY = getenv('OPTIMIZELY_KEY')
 app.config.from_object(__name__)
 
 app.db = Redis.from_url(
