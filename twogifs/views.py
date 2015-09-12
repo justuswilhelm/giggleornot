@@ -1,7 +1,6 @@
 from uuid import uuid4
 
 from flask import (
-    abort,
     request,
     send_from_directory,
     session,
@@ -101,7 +100,7 @@ def check_session():
     if request.path == '/ping' or is_crawler(request):
         return
     if not is_human(request):
-        abort(403)
+        return
     if not has_valid_session(session):
         create_session()
 
