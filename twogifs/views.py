@@ -15,7 +15,6 @@ from .tracking import (
 )
 from .spam_filter import (
     is_human,
-    is_crawler,
     has_valid_session,
     rate_limit,
     is_rate_limited,
