@@ -4,10 +4,13 @@ referrer_blacklist = [
     'http://best-seo-report.com',
     'http://www.twogifs.com/?ref=amaze',
 ]
+ref_blacklist = ['amaze']
+
 is_human = lambda request: all([
     request.method != 'HEAD',
     request.user_agent.browser is not None,
     request.referrer not in referrer_blacklist,
+    request.args.get('ref', '') not in ref_blacklist,
     not is_crawler(request),
     request.path != '/ping',
 ])

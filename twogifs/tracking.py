@@ -12,7 +12,7 @@ user_id = lambda session: session.get('uid', 'anon')
 request_metadata = lambda request: {
     '$browser': request.user_agent.browser,
     '$browser_version': request.user_agent.version,
-    '$initial_referrer': request.referrer,
+    '$initial_referrer': request.args.get('ref', request.referrer),
     'ip': request.access_route[0], }
 
 
