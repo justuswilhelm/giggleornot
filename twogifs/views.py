@@ -97,11 +97,9 @@ def ping():
 
 @app.before_request
 def check_session():
-    if request.path == '/ping' or is_crawler(request):
-        return
     if not is_human(request):
         return
-    if not has_valid_session(session):
+    elif not has_valid_session(session):
         create_session()
 
 

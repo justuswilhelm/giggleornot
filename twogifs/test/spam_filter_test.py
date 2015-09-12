@@ -24,7 +24,8 @@ class IsHumanTestCase(TestCase):
         self.assertNotEqual(response.headers.getlist('Set-Cookie'), [])
 
     def test_amaze_receives_no_cookie(self):
-        response = self.app.get('/?ref=amaze')
+        response = self.app.get('/?ref=amaze', environ_base={
+            'HTTP_REFERER': 'http://www.twogifs.com/?ref=amaze'})
         self.assertEqual(response.headers.getlist('Set-Cookie'), [])
 
     def test_seo_spam_receives_no_cookie(self):

@@ -7,8 +7,9 @@ referrer_blacklist = [
 is_human = lambda request: all([
     request.method != 'HEAD',
     request.user_agent.browser is not None,
-    request.args.get('ref', '') != 'amaze',
     request.referrer not in referrer_blacklist,
+    not is_crawler(request),
+    request.path != '/ping',
 ])
 # http://werkzeug.pocoo.org/docs/0.10/utils/#module-werkzeug.useragents
 is_crawler = lambda request: request.user_agent.browser in [
