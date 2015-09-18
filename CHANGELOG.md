@@ -1,5 +1,11 @@
 # Change Log
 
+## [Unreleased] - unreleased
+
+### Added
+- Central django-like management command `manage.py`
+- Spam filtering
+
 ## [1.0.0] - 2015-09-09
 
 ### Added
