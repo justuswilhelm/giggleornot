@@ -39,6 +39,13 @@ class ImageRanking:
         return [(e[0].decode(), e[1]) for e in app.db.zrevrangebyscore(
             self.KEY_NAME, 'inf', '-inf', withscores=True)]
 
+    def remove_invalid_scores(self):
+        for image_id in self.get_image_ranking():
+            try:
+                self.image_retriever.get_image(image_id)
+            except KeyError:
+                app.db.zrem(self.KEY_NAME, image_id)
+
     def get_image_sample(self, count=2):
         images = list(self.filter_images())
         shuffle(images)
