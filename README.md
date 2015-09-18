@@ -6,7 +6,8 @@ Rate and compare Imgur pictures a la Hot Or Not.
 pip install -r requirements.txt
 cp .env.template .env
 vim .env  # Add env vars (see Environment Variables)
-foreman start
+redis-server &
+foreman run ./manage.py runserver
 ```
 
 ## Requirements
@@ -22,3 +23,16 @@ Should reside in `.env` so that foreman can pick them up.
 - `MIXPANEL_TOKEN` ... Mixpanel Project Token
 - `OPTIMIZELY_KEY` ... Optimizely Key
 - `SECRET_KEY` ... set it to something secret.
+
+## How to retrieve new images from imgur
+```
+./manage.py retrieve_images
+```
+
+## How to purge scores for invalid GIF ids
+Often, GIFs get pushed off the imgur front page after some time. GIFs that
+appear in the ranking can then become invalid. In order to remove scores for old
+GIFs, run
+```
+./manage.py remove_invalid_scores
+```

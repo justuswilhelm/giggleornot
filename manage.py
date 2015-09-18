@@ -5,7 +5,14 @@ manage_methods = {}
 
 
 def manage(method):
-    manage_methods[method.__name__] = method
+    def wrap(*args, **kwargs):
+        print("Calling management task {}".format(method.__name__))
+        method(*args, **kwargs)
+        print("Done with {}".format(method.__name__))
+
+    manage_methods[method.__name__] = wrap
+
+    return wrap
 
 
 def main():

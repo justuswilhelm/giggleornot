@@ -27,6 +27,7 @@ class ImageRetriever:
         pipe = app.db.pipeline()
         pipe.delete('images')
         for image in images:
+            print("Storing {}".format(image.id))
             pipe.hsetnx('images', image.id, dumps(image))
         pipe.execute()
 
