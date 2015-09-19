@@ -59,7 +59,7 @@ def vote(yay, nay):
 
         session['score'] = session.get('score', 0) + 1
     else:
-        app.logger.warning('Rate limiting for {}'.format(key))
+        app.logger.warning('Rate limiting for {}'.format(rate_limit_key))
     return redirect("/")
 
 
