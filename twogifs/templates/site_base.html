@@ -10,22 +10,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
   <body>
-    <a class="button button-facebook float-right" href="https://www.facebook.com/twogifs" class="button button-facebook" 
+    <a class="button button-facebook float-right" href="https://www.facebook.com/twogifs" class="button button-facebook"
       target="_blank">
       Facebook
     </a>
     <div class="container">
-      <div class="row">
-        <div class="offset-by-three six columns">
-          <a href="/">
-            <img class="logo u-max-full-width"
-            src="{{ url_for('static', filename='logo.png') }}" alt="two gifs">
-          </a>
-        </div>
-        <div class="three columns">
-          {% include "_user.html" %}
-        </div>
-      </div>
+      {% include "_header.html" %}
       {% include "_flash.html" %}
       {% block content %}{% endblock content %}
       {% include "_footer.html" %}
