@@ -1,5 +1,9 @@
 (function animate() {
-  var $uni = document.getElementsByClassName('unicorn')[0];
+  var unicorns = document.getElementsByClassName('unicorn');
+  if (unicorns.length == 0) {
+    return;
+  }
+  var $uni = unicorns[0];
   var text = $uni.innerHTML;
   var color_steps = 360 / text.length;
   var newCont = "";
