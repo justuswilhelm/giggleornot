@@ -1,6 +1,7 @@
 from uuid import uuid4
 
 from flask import (
+    redirect,
     request,
     send_from_directory,
     session,
@@ -32,21 +33,6 @@ def static_from_root():
 
 @app.route("/")
 def index():
-    is_vote = lambda: {'yay', 'nay'}.issubset(request.args.keys())
-    if is_vote() and has_valid_session(session):
-        yay = request.args['yay']
-        nay = request.args['nay']
-        key = sorted((yay, nay))
-
-        if not is_rate_limited(session, key):
-            image_ranking.upvote_image(yay)
-            image_ranking.downvote_image(nay)
-            track_vote(request, session, yay, nay)
-            rate_limit(session, key)
-            session['score'] = session.get('score', 0) + 1
-        else:
-            app.logger.warning('Rate limiting for {}'.format(key))
-
     # Get two random images
     images = image_ranking.get_image_sample()
 
@@ -55,6 +41,26 @@ def index():
         images=images,
         ranking=image_ranking.get_image_ranking()[:5],
     )
+
+@app.route("/vote/<yay>/<nay>/")
+def vote(yay, nay):
+    if not has_valid_session(session):
+        return redirect("/")
+
+    rate_limit_key = sorted((yay, nay))
+
+    if not is_rate_limited(session, rate_limit_key):
+        image_ranking.upvote_image(yay)
+        image_ranking.downvote_image(nay)
+
+        track_vote(request, session, yay, nay)
+
+        rate_limit(session, rate_limit_key)
+
+        session['score'] = session.get('score', 0) + 1
+    else:
+        app.logger.warning('Rate limiting for {}'.format(key))
+    return redirect("/")
 
 
 @app.route("/<left>")
