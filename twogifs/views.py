@@ -10,10 +10,7 @@ from flask import (
 
 from .data import ImageRanking
 from . import app
-from .tracking import (
-    track_vote,
-    track_new_user,
-)
+from .tracking import track_vote
 from .spam_filter import (
     is_human,
     has_valid_session,
@@ -111,4 +108,3 @@ def check_session():
 def create_session():
     session.permanent = True
     session['uid'] = str(uuid4())
-    track_new_user(request, session)

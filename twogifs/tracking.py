@@ -21,8 +21,3 @@ def track_vote(request, session, up, down):
     properties.update({'up': up, 'down': down})
 
     pool.apply_async(mp.track, [user_id(session), 'vote', properties])
-
-
-def track_new_user(request, session):
-    pool.apply_async(mp.track, [
-        user_id(session), 'new_user', request_metadata(request)])
