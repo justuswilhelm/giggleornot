@@ -21,7 +21,6 @@ Should reside in `.env` so that foreman can pick them up.
 - `IMGUR_CLIENT_ID` and `IMGUR_CLIENT_SECRET` ... can be retrieved in your app
   settings on https://api.imgur.com.
 - `MIXPANEL_TOKEN` ... Mixpanel Project Token
-- `OPTIMIZELY_KEY` ... Optimizely Key
 - `SECRET_KEY` ... set it to something secret.
 
 ## How to retrieve new images from imgur
