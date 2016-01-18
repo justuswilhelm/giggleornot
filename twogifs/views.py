@@ -1,5 +1,6 @@
 from uuid import uuid4
 
+from werkzeug.exceptions import NotFound
 from flask import (
     redirect,
     request,
@@ -39,6 +40,7 @@ def index():
         ranking=image_ranking.get_image_ranking()[:5],
     )
 
+
 @app.route("/vote/<yay>/<nay>/")
 def vote(yay, nay):
     if not has_valid_session(session):
@@ -47,6 +49,12 @@ def vote(yay, nay):
     rate_limit_key = sorted((yay, nay))
 
     if not is_rate_limited(session, rate_limit_key):
+        try:
+            image_ranking.image_retriever.get_image(yay)
+            image_ranking.image_retriever.get_image(nay)
+        except KeyError:
+            raise NotFound()
+
         image_ranking.upvote_image(yay)
         image_ranking.downvote_image(nay)
 
